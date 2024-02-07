@@ -1,70 +1,44 @@
 const cds = require('@sap/cds');
 
-module.exports = cds.service.impl(async (srv) => {
-  const { BusinessPartner, Store, Product, StockData, PurchaseApp, PurchaseItem, SalesApp, SalesItem } = srv.entities;
+module.exports = cds.service.impl(async function () {
+    const { States, Business_Partner } = this.entities;
 
-  // Implementation of service functions
+    this.on("READ", Business_Partner, async (req) => {
+        const results = await cds.run(req.query);
+        return results;
+    });
 
-  // Business Partner Validation
-  srv.before('CREATE', 'BusinessPartner', async (req) => {
-    const { GSTINNumber, Is_gstn_registered } = req.data;
-    if (Is_gstn_registered && !GSTINNumber) {
-      req.error(400, 'GSTIN Number is mandatory when GSTN is registered');
-    }
-  });
+    this.before("CREATE",  Business_Partner, async (req) => {
+        const { BusinessPartnerNumber, Is_gstn_registered, Gst_num } = req.data;
 
-  // Purchase Price Validation
-  srv.before('CREATE', 'PurchaseItem', async (req) => {
-    const { product_id, price } = req.data;
-    const product = await cds.tx(req).run(SELECT.from(Product).where({ ProductID: product_id }));
-    if (product && product.ProductCostPrice && price > product.ProductCostPrice) {
-      req.error(400, 'Price should not be more than the cost price');
-    }
-  });
+        // Check if Is_gstn_registered is true and Gst_num is not provided
+        if (Is_gstn_registered && !Gst_num) {
+            req.error({
+                code: "MISSING_GST_NUM",
+                message: "GSTIN number is mandatory when Is_gstn_registered is true",
+                target: "Gst_num",
+            });
+        }
 
-  // Sales Price Validation
-  srv.before('CREATE', 'SalesItem', async (req) => {
-    const { product_id, price } = req.data;
-    const product = await cds.tx(req).run(SELECT.from(Product).where({ ProductID: product_id }));
-    if (product && product.ProductSellPrice && price < product.ProductSellPrice) {
-      req.error(400, 'Price should not be less than the sell price');
-    }
-  });
+        const query1 = SELECT.from(Business_Partner).where({ BusinessPartnerNumber });
+        const result = await cds.run(query1); // Execute the query using cds.run()
+        
+        if (result.length > 0) {
+            req.error({
+                code: "STEMAILEXISTS",
+                message: " already exists",
+                target: "BusinessPartnerNumber",
+            });
+        }
+    });
 
-  // Stock Update on Purchase
-  srv.after('CREATE', 'PurchaseApp', async (req) => {
-    const { Items } = req.data;
-    for (const item of Items) {
-      const stockData = await cds.tx(req).run(SELECT.one(StockData).where({ store_id: item.store_id, product_id: item.product_id }));
-      if (stockData) {
-        stockData.stock_qty += item.qty;
-        await cds.tx(req).run(UPDATE(StockData).set(stockData).where({ store_id: item.store_id, product_id: item.product_id }));
-      } else {
-        await cds.tx(req).run(INSERT.into(StockData).entries({ store_id: item.store_id, product_id: item.product_id, stock_qty: item.qty }));
-      }
-    }
-  });
-
-  // Stock Update on Sales
-  srv.after('CREATE', 'SalesApp', async (req) => {
-    const { Items } = req.data;
-    for (const item of Items) {
-      const stockData = await cds.tx(req).run(SELECT.one(StockData).where({ store_id: item.store_id, product_id: item.product_id }));
-      if (stockData && stockData.stock_qty >= item.qty) {
-        stockData.stock_qty -= item.qty;
-        await cds.tx(req).run(UPDATE(StockData).set(stockData).where({ store_id: item.store_id, product_id: item.product_id }));
-      } else {
-        req.error(400, 'Insufficient stock for the sales');
-      }
-    }
-  });
-  this.on('READ',States,async(req)=>{
-    genders=[
-        {"code":"TS","description":"Telangana"},
-        {"code":"AP","description":"Andra Pradesh"},
-        {"code":"TN","description":"Tamil Nadu"},
-    ]
-    genders.$count=genders.length
-    return genders;
-  })
+    this.on('READ', States, async (req) => {
+        const states = [
+            {"code": "TS", "description": "Telangana"},
+            {"code": "AP", "description": "Andra Pradesh"},
+            {"code": "TN", "description": "Tamil Nadu"},
+        ];
+        states.$count = states.length;
+        return states;
+    });
 });
