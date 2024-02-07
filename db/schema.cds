@@ -69,3 +69,10 @@ entity ProductStock {
   price : Decimal(10, 2);
   store : Association to Store;
 }
+
+entity States {
+    @title:'code'
+    key code: String(3);
+    @title:'description'
+    description:String(10);
+}

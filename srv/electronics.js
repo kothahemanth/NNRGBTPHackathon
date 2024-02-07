@@ -58,4 +58,13 @@ module.exports = cds.service.impl(async (srv) => {
       }
     }
   });
+  this.on('READ',States,async(req)=>{
+    genders=[
+        {"code":"TS","description":"Telangana"},
+        {"code":"AP","description":"Andra Pradesh"},
+        {"code":"TN","description":"Tamil Nadu"},
+    ]
+    genders.$count=genders.length
+    return genders;
+  })
 });
