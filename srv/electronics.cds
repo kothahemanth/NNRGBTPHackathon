@@ -7,7 +7,7 @@ service ElectronicsDB {
     entity StockData as projection on db.StockData;
     entity PurchaseOrder as projection on db.PurchaseOrder;
     entity SalesOrder as projection on db.SalesOrder;
-    entity ProductStock as projection on db.ProductStock; // Renamed from PurchaseOrder to ProductStock
+    entity ProductStock as projection on db.ProductStock; 
 }
 
 annotate ElectronicsDB.BusinessPartner with {
