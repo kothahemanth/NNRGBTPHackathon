@@ -20,7 +20,7 @@ module.exports = cds.service.impl(async function () {
           req.error({
             code: "STEMAILEXISTS",
             message: " already exists",
-            target: "bp_np",
+            target: "bp_no",
           });
         }
         
