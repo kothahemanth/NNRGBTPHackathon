@@ -2,7 +2,7 @@ namespace com.test.sdb;
 using {cuid} from '@sap/cds/common';
 
 entity Business_Partner {
-    key ID       : UUID;
+    @title: 'BP'
     bp_no        : String(6);
     @title:'Name'
     name         : String(20);
