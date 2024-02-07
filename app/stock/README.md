@@ -1,15 +1,15 @@
 ## Application Details
 |               |
 | ------------- |
-|**Generation Date and Time**<br>Wed Feb 07 2024 15:35:31 GMT+0530 (India Standard Time)|
+|**Generation Date and Time**<br>Wed Feb 07 2024 15:25:01 GMT+0530 (India Standard Time)|
 |**App Generator**<br>@sap/generator-fiori-elements|
-|**App Generator Version**<br>1.12.2|
+|**App Generator Version**<br>1.12.3|
 |**Generation Platform**<br>Visual Studio Code|
 |**Template Used**<br>List Report Page V4|
 |**Service Type**<br>Local Cap|
-|**Service URL**<br>http://localhost:4004/odata/v4/market/
+|**Service URL**<br>http://localhost:4004/odata/v4/store-db/
 |**Module Name**<br>stock|
-|**Application Title**<br>Stock Info|
+|**Application Title**<br>Stock Data|
 |**Namespace**<br>|
 |**UI5 Theme**<br>sap_horizon|
 |**UI5 Version**<br>1.120.6|

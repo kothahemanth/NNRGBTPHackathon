@@ -2,10 +2,10 @@ sap.ui.require(
     [
         'sap/fe/test/JourneyRunner',
         'business/test/integration/FirstJourney',
-		'business/test/integration/pages/Business_PartnerList',
-		'business/test/integration/pages/Business_PartnerObjectPage'
+		'business/test/integration/pages/BusinessList',
+		'business/test/integration/pages/BusinessObjectPage'
     ],
-    function(JourneyRunner, opaJourney, Business_PartnerList, Business_PartnerObjectPage) {
+    function(JourneyRunner, opaJourney, BusinessList, BusinessObjectPage) {
         'use strict';
         var JourneyRunner = new JourneyRunner({
             // start index.html in web folder
@@ -16,8 +16,8 @@ sap.ui.require(
         JourneyRunner.run(
             {
                 pages: { 
-					onTheBusiness_PartnerList: Business_PartnerList,
-					onTheBusiness_PartnerObjectPage: Business_PartnerObjectPage
+					onTheBusinessList: BusinessList,
+					onTheBusinessObjectPage: BusinessObjectPage
                 }
             },
             opaJourney.run

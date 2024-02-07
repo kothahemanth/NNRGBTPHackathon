@@ -1,5 +1,5 @@
 {
-  "name": "NNRGBTPHackathon",
+  "name": "nnrg",
   "version": "1.0.0",
   "description": "A simple CAP project.",
   "repository": "<Add your repository here>",
@@ -15,15 +15,14 @@
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-purchase": "cds watch --open purchase/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-sales": "cds watch --open sales/webapp/index.html?sap-ui-xx-viewCache=false",
     "watch-business": "cds watch --open business/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-stock": "cds watch --open stock/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch-store": "cds watch --open store/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-states": "cds watch --open states/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "sapux": [
-    "app/purchase",
-    "app/sales",
     "app/business",
-    "app/stock"
+    "app/store",
+    "app/states",
+    "app/business"
   ]
 }

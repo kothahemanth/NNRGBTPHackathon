@@ -12,12 +12,12 @@
     "resources": "resources.json",
     "sourceTemplate": {
       "id": "@sap/generator-fiori:lrop",
-      "version": "1.12.2",
-      "toolsId": "c7bb67b2-28a7-4923-8692-25b49f7403e5"
+      "version": "1.12.3",
+      "toolsId": "53f01e02-07c8-455b-94db-8031f9894550"
     },
     "dataSources": {
       "mainService": {
-        "uri": "/odata/v4/market/",
+        "uri": "/odata/v4/nnrg/",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -87,42 +87,42 @@
       "routes": [
         {
           "pattern": ":?query:",
-          "name": "Business_PartnerList",
-          "target": "Business_PartnerList"
+          "name": "BusinessList",
+          "target": "BusinessList"
         },
         {
-          "pattern": "Business_Partner({key}):?query:",
-          "name": "Business_PartnerObjectPage",
-          "target": "Business_PartnerObjectPage"
+          "pattern": "Business({key}):?query:",
+          "name": "BusinessObjectPage",
+          "target": "BusinessObjectPage"
         }
       ],
       "targets": {
-        "Business_PartnerList": {
+        "BusinessList": {
           "type": "Component",
-          "id": "Business_PartnerList",
+          "id": "BusinessList",
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "contextPath": "/Business_Partner",
+              "contextPath": "/Business",
               "variantManagement": "Page",
               "navigation": {
-                "Business_Partner": {
+                "Business": {
                   "detail": {
-                    "route": "Business_PartnerObjectPage"
+                    "route": "BusinessObjectPage"
                   }
                 }
               }
             }
           }
         },
-        "Business_PartnerObjectPage": {
+        "BusinessObjectPage": {
           "type": "Component",
-          "id": "Business_PartnerObjectPage",
+          "id": "BusinessObjectPage",
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/Business_Partner"
+              "contextPath": "/Business"
             }
           }
         }

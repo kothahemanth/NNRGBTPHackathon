@@ -1,26 +1,26 @@
 ## Application Details
 |               |
 | ------------- |
-|**Generation Date and Time**<br>Wed Feb 07 2024 15:34:46 GMT+0530 (India Standard Time)|
+|**Generation Date and Time**<br>Wed Feb 07 2024 15:54:22 GMT+0530 (India Standard Time)|
 |**App Generator**<br>@sap/generator-fiori-elements|
-|**App Generator Version**<br>1.12.2|
+|**App Generator Version**<br>1.12.3|
 |**Generation Platform**<br>Visual Studio Code|
 |**Template Used**<br>List Report Page V4|
 |**Service Type**<br>Local Cap|
-|**Service URL**<br>http://localhost:4004/odata/v4/market/
+|**Service URL**<br>http://localhost:4004/odata/v4/nnrg/
 |**Module Name**<br>business|
-|**Application Title**<br>business info|
+|**Application Title**<br>business|
 |**Namespace**<br>|
 |**UI5 Theme**<br>sap_horizon|
 |**UI5 Version**<br>1.120.6|
 |**Enable Code Assist Libraries**<br>False|
 |**Enable TypeScript**<br>False|
 |**Add Eslint configuration**<br>False|
-|**Main Entity**<br>Business_Partner|
+|**Main Entity**<br>Business|
 
 ## business
 
-An SAP Fiori application.
+business
 
 ### Starting the generated app
 

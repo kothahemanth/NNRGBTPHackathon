@@ -1,1 +1,1 @@
-using Market as service from '../../srv/electronics';
+using nnrg as service from '../../srv/nnrg';
