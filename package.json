@@ -16,10 +16,14 @@
   "scripts": {
     "start": "cds-serve",
     "watch-purchase": "cds watch --open purchase/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-sales": "cds watch --open sales/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch-sales": "cds watch --open sales/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-business": "cds watch --open business/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-stock": "cds watch --open stock/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "sapux": [
     "app/purchase",
-    "app/sales"
+    "app/sales",
+    "app/business",
+    "app/stock"
   ]
 }
