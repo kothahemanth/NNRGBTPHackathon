@@ -44,14 +44,20 @@ entity PurchaseOrder {
   key PurchaseOrderNumber : UUID;
   BusinessPartner : UUID;
   PurchaseOrderDate : DateTime;
-  Items : Association to ProductStock;
+  Items: Composition of many {
+        key ID: UUID;
+        items: Association to ProductStock;
+    };
 }
 
 entity SalesOrder {
   key SalesOrderNumber : UUID;
   BusinessPartner : UUID;
   SalesDate : DateTime;
-  Items : Association to ProductStock;
+  Items: Composition of many {
+        key ID: UUID;
+        items: Association to ProductStock;
+    };
 }
 
 entity ProductStock {

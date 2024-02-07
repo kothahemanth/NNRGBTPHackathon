@@ -190,6 +190,8 @@ annotate ElectronicsDB.StockData with @(
     ]
 );
 
+
+
 annotate ElectronicsDB.PurchaseOrder with @(
     UI.LineItem: [
         { $Type: 'UI.DataField', Value: PurchaseOrderNumber },
@@ -198,8 +200,7 @@ annotate ElectronicsDB.PurchaseOrder with @(
         { 
             $Type: 'UI.DataField',
             Label: 'Items',
-            Value: Items,
-            Target: 'ProductStock/@UI.LineItem'
+            Value: 'Items',
         }
     ],
     UI.FieldGroup #PurchaseOrderFieldGroup : {
@@ -211,8 +212,7 @@ annotate ElectronicsDB.PurchaseOrder with @(
             { 
                 $Type: 'UI.DataField',
                 Label: 'Items',
-                Value: Items,
-                Target: 'ProductStock/@UI.LineItem'
+                Value: 'Items',
             }
         ]
     },
@@ -247,7 +247,6 @@ annotate ElectronicsDB.SalesOrder.Items with @(
         }
     ]
 );
-
 
 
 
