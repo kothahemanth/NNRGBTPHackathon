@@ -2,6 +2,8 @@ using { com.hemanth.nnrg as db } from '../db/schema';
 service nnrg {
     entity Business as projection on db.Business;
     entity Store as projection on db.Store;
+    entity Product as projection on db.Product;
+    
     entity States as projection on db.States{
         @UI.Hidden: true
         ID,
@@ -166,7 +168,7 @@ annotate nnrg.States with @(
     ],
 
 );
-annotate nnrg.BusinessPartner  with {
+annotate nnrg.Business  with {
     state @(
         Common.Text:state.description,
         Common.TextArrangement: #TextOnly,
@@ -305,3 +307,178 @@ annotate nnrg.Store  with {
         }
     )
 };
+
+/*product*/
+annotate nnrg.Product with @(
+    UI.LineItem: [
+        {
+            $Type : 'UI.DataField',
+            Value : product_id
+        },
+        
+        {
+            $Type : 'UI.DataField',
+            Value : product_name
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : image_url
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : cost_price
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : sell_price
+        },
+
+    ],
+    UI.SelectionFields: [product_name],
+    UI.FieldGroup #ProductInformation : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : product_id,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : product_name,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : image_url,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : cost_price,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : sell_price,
+            },
+        ],
+    },
+    UI.Facets : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'ProductInfoFacet',
+            Label : 'ProductInformation',
+            Target : '@UI.FieldGroup#ProductInformation',
+        },
+        /*
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'StudentLanguagesFacet',
+            Label : 'Student Languages Information',
+            Target : 'Languages/@UI.LineItem',
+        },
+        */
+    ],
+    
+);
+
+/* Stock */
+annotate nnrg.Stock with @(
+    UI.LineItem: [
+        {
+            $Type : 'UI.DataField',
+            Value : store_id_ID
+        },
+        
+        {
+            $Type : 'UI.DataField',
+            Value : product_id_ID
+        },
+        {
+            Label: 'Stock Quantity',
+            Value: stock_qty
+        },
+    ],
+    UI.FieldGroup #StoreInformation : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+            $Type : 'UI.DataField',
+            Value : store_id_ID,
+        },
+        
+        {
+            $Type : 'UI.DataField',
+            Value : product_id_ID,
+        },
+        {
+            Label: 'State',
+            Value: stock_qty,
+        },
+        ],
+    },
+    UI.Facets : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'St0ckInfoFacet',
+            Label : 'StockInformation',
+            Target : '@UI.FieldGroup#StockInformation',
+        },
+        /*
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'StudentLanguagesFacet',
+            Label : 'Student Languages Information',
+            Target : 'Languages/@UI.LineItem',
+        },
+      */
+    ],
+    
+);
+
+annotate nnrg.Stock.Store with @(
+    UI.LineItem:[
+        {
+            Label: 'StockStore',
+            Value: Store.store_ID
+        },
+    ],
+
+    UI.FieldGroup #StockStore : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                Value :store_ID ,
+            }
+        ],
+    },
+    UI.Facets : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'StockStoreFacet',
+            Label : 'StockStore',
+            Target : '@UI.FieldGroup#StockStore',
+        },
+    ],
+);
+annotate nnrg.Stock.Product with @(
+    UI.LineItem:[
+        {
+            Label: 'StockProduct',
+            Value: Product.product_ID
+        },
+    ],
+    UI.FieldGroup #StockProduct : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                Value :product_ID ,
+            }
+        ],
+    },
+    UI.Facets : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'StockProductFacet',
+            Label : 'StockProduct',
+            Target : '@UI.FieldGroup#StockProduct',
+        },
+    ],
+);
