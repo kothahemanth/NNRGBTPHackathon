@@ -61,3 +61,17 @@ entity Stock: cuid, managed {
         @title: 'Stock Quantity'
     stock_qty: Integer;
 }
+
+entity Product : cuid, managed {
+    @title: 'Product ID'
+    product_id: String(5);
+    @title: 'Product Name'
+    product_name: String(40) ;
+    @title: 'Product Image URL'
+    image_url: String(40);
+    @title: 'Product Cost Price'
+    cost_price: String(100) ;
+    @title: 'Product Sell Price'
+    sell_price: String(20) ;
+    
+}
