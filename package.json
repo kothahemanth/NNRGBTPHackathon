@@ -11,18 +11,23 @@
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
-    "@sap/ux-specification": "^1.120.3"
+    "@sap/ux-specification": "^1.120.4"
   },
   "scripts": {
     "start": "cds-serve",
     "watch-business": "cds watch --open business/webapp/index.html?sap-ui-xx-viewCache=false",
     "watch-store": "cds watch --open store/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-states": "cds watch --open states/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch-states": "cds watch --open states/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-stock-data": "cds watch --open stock-data/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "sapux": [
     "app/business",
     "app/store",
     "app/states",
-    "app/business"
+    "app/business",
+    "app/business",
+    "app/stock-data",
+    "app/states",
+    "app/stock-data"
   ]
 }

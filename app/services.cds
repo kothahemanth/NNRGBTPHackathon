@@ -1,8 +1,7 @@
 
-using from './business/annotations';
-
-using from './store/annotations';
-
-using from './stock/annotations';
 
 using from './business/annotations';
+
+using from './states/annotations';
+
+using from './stock-data/annotations';

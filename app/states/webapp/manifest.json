@@ -12,8 +12,8 @@
     "resources": "resources.json",
     "sourceTemplate": {
       "id": "@sap/generator-fiori:lrop",
-      "version": "1.12.3",
-      "toolsId": "c1380b9f-c325-4353-af7d-e8041e868e64"
+      "version": "1.12.2",
+      "toolsId": "bc7a6416-4ce5-4f07-bc4d-48a4e01dea9b"
     },
     "dataSources": {
       "mainService": {
@@ -45,7 +45,7 @@
   "sap.ui5": {
     "flexEnabled": true,
     "dependencies": {
-      "minUI5Version": "1.120.6",
+      "minUI5Version": "1.120.8",
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
@@ -83,6 +83,7 @@
       "css": []
     },
     "routing": {
+      "config": {},
       "routes": [
         {
           "pattern": ":?query:",
@@ -102,7 +103,6 @@
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "initialLoad": "Enabled",
               "contextPath": "/States",
               "variantManagement": "Page",
               "navigation": {
