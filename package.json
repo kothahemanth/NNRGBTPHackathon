@@ -20,6 +20,20 @@
     "watch-states": "cds watch --open states/webapp/index.html?sap-ui-xx-viewCache=false",
     "watch-stock-data": "cds watch --open stock-data/webapp/index.html?sap-ui-xx-viewCache=false"
   },
+  "cds": {
+    "fiori": {
+      "lean_draft": true,
+      "bypass_draft": true
+    },
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": "db.sqlite"
+        }
+      }
+    }
+  },
   "sapux": [
     "app/business",
     "app/store",

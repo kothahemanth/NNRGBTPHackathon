@@ -1,62 +1,67 @@
 namespace com.hemanth.nnrg;
 using { managed, cuid } from '@sap/cds/common';
+@assert.unique:{
+    bp_no:[bp_no]
+}
+entity Business_Partner {
+    key ID: UUID;
+    bp_no:String(6);
+    @title:'Name'
+    name:String(20);
+    @title:'Address 1'
+    add1:String(20);
+    @title:'Address 2'
+    add2:String(20);
+    @title:'City'
+    city:String(20);
+    @title:'State'
+    state:Association to States;
+    @title:'pin code'
+    pinCode:String(10);
+    @title:'Is_gstn_registered'
+    Is_gstn_registered:Boolean default false;
 
-/*@assert.unique:{
-    studentid:[studentid]
-}*/
-entity Business: cuid, managed {
-    @title: 'Business Partner Number'
-    bp_number: String(5);
-    @title: ' Name'
-    name: String(40) ;
-    @title: 'Address 1'
-    address_1: String(40);
-    @title: 'Adress 2'
-    address_2: String(100) ;
-    @title: 'City'
-    city: String(20) ;
-    @title: 'State'
-    state: Association to States;
-    @title: 'PIN Code'
-    pincode: String(10);
-    
-    @title:'GSTIN Number'
-    is_gstin_number: String(15) @mandatory;
-    @title:'IS Vendor'
-    is_vendor: Boolean default false;
-    @title:'IS Customer'
-    is_customer: Boolean default false;
+
+    @title:'GSTIN number'
+    Gst_num:String(20);
+    @title:'is_vendor'
+    Is_vendor:String(10);
+    @title:'is_customer'
+    Is_customer:String(10);
 }
 
-@cds.persistence.skip
-entity States : cuid, managed {
-    @title: 'Code'
-    code: String(3);
-    @title: 'Description'
-    description: String(50);
+entity Store {
+    key ID: UUID;
+    store_id :String(10);
+    name         : String(100);
+    add1     : String(255);
+    add2     : String(255);
+    city         : String(100);
+    state        : Association to States;
+    PinCode      : String(10) ;
 }
 
-entity Store: cuid, managed {
-    @title: 'Store ID'
-    store_id: String(5);
-    @title: ' Name'
-    name: String(40) ;
-    @title: 'Address 1'
-    address_1: String(40);
-    @title: 'Adress 2'
-    address_2: String(100) ;
-    @title: 'City'
-    city: String(20) ;
-    @title: 'State'
-    state: Association to States;
-    @title: 'PIN Code'
-    pincode: String(10);
+entity Product {
+    key ID: UUID;
+    p_id           : String(20); 
+    name     : String(100);
+    imageURL        : String(255);
+    costPrice       : Decimal(15, 2); 
+    sellPrice       : Decimal(15, 2); 
+}
+
+
+entity Stock {
+    key ID            : UUID;
+    storeId         : Association to Store;
+    productId       : Association to Product;
+    stock_qty        : Integer;
 }
 
 entity PurchaseApp {
     key ID            : UUID;
-    b_id:Integer;
-    bp:Association to Business;
+    pon:Integer;
+    bp:Association to Business_Partner;
     pDate:Date;
     Items:Composition of many{
         key ID:UUID;
@@ -72,36 +77,21 @@ entity Items {
     price:Association to Product;
 }
 
-entity Stock: cuid, managed {
-    @title: 'Store ID'
-    store_id: String(23);
-        @title: 'Product ID'
-    product_id:String(5);
-        @title: 'Stock Quantity'
-    stock_qty: Integer;
-}
-
 entity SalesApp {
     key ID :UUID;
-    s_id:Integer;
-    bp:Association to Business;
+    son:Integer;
+    bp:Association to Business_Partner;
     saleDate:Association to PurchaseApp;
      Items:Composition of many{
         key ID:UUID;
         item:Association to Items;
     }
 }
-
-entity Product : cuid, managed {
-    @title: 'Product ID'
-    product_id: String(5);
-    @title: 'Product Name'
-    product_name: String(40) ;
-    @title: 'Product Image URL'
-    image_url: String(40);
-    @title: 'Product Cost Price'
-    cost_price: String(100) ;
-    @title: 'Product Sell Price'
-    sell_price: String(20) ;
+@cds.persistence.skip
+entity States {
+    @title:'code'
+    key code: String(10);
+    @title:'description'
+    description:String(10);
     
 }
