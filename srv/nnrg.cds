@@ -1,22 +1,39 @@
 using { com.hemanth.nnrg as db } from '../db/schema';
 service nnrg {
     entity Business as projection on db.Business;
-    entity Store as projection on db.Store;
-    entity Product as projection on db.Product;
-    
+    entity Store as projection on db.Store {
+            @UI.Hidden: true
+            ID,
+            *
+        };
+
+    entity Product as projection on db.Product {
+            @UI.Hidden: true
+            ID,
+            *
+        };
+
+    entity Stock as projection on db.Stock;
+    entity Items as projection on db.Items;
+    entity PurchaseApp as projection on db.PurchaseApp;
     entity States as projection on db.States{
         @UI.Hidden: true
         ID,
         *
     };
 }
+
 annotate nnrg.Business with @odata.draft.enabled;
 annotate nnrg.States with @odata.draft.enabled;
 annotate nnrg.Store with @odata.draft.enabled;
+annotate nnrg.Items with @odata.draft.enabled;
+annotate nnrg.PurchaseApp with @odata.draft.enabled;
+annotate nnrg.Product with @odata.draft.enabled;
+
 annotate nnrg.Business  with {
-    name      @assert.format: '^[a-zA-Z]{2,}$';
+
     pincode @assert.format: '^[1-9][0-9]{5}$';
-    //telephone @assert.format: '^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$';
+    is_gstin_number @assert.format: '^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[Z]{1}[0-9]{1}$';
 }
 
 annotate nnrg.Business with @(
@@ -270,14 +287,7 @@ annotate nnrg.Store with @(
             Label : 'StoreInformation',
             Target : '@UI.FieldGroup#StoreInformation',
         },
-        /*
-        {
-            $Type : 'UI.ReferenceFacet',
-            ID : 'StudentLanguagesFacet',
-            Label : 'Student Languages Information',
-            Target : 'Languages/@UI.LineItem',
-        },
-      */
+
     ],
     
 );
@@ -307,6 +317,112 @@ annotate nnrg.Store  with {
         }
     )
 };
+
+annotate nnrg.Items with @(
+    UI.LineItem         : [
+        {
+            Label: 'Store Id',
+            Value: storeId.store_id
+        },
+        {
+            Label: 'Quantity',
+            Value: qty.stock_qty
+        },
+        {
+            Label: 'Price',
+            Value: price.sell_price
+        },
+
+    ],
+
+    UI.FieldGroup #items: {
+        $Type: 'UI.FieldGroupType',
+        Data : [
+            {
+                Label: 'Store Id',
+                Value: storeId_ID
+            },
+            {
+                Label: 'Quantity',
+                Value: qty_ID
+            },
+            {
+                Label: 'Price',
+                Value: price_ID
+            },
+        ],
+    },
+    UI.Facets           : [{
+        $Type : 'UI.ReferenceFacet',
+        ID    : 'itemsFacet',
+        Label : 'items',
+        Target: '@UI.FieldGroup#items',
+    }, ],
+);
+
+annotate nnrg.PurchaseApp with @(
+    UI.LineItem          : [
+        {
+            Label: 'Purchase Order Number',
+            Value: b_id
+        },
+        {
+            Label: 'Business Partner',
+            Value: bp.name
+        },
+        {
+            Label: 'Product purchase Date',
+            Value: pDate
+        },
+        {
+            Label: 'store id',
+            Value: Items.item.storeId
+        },
+        {
+            Label: 'quantity',
+            Value: Items.item.qty
+        },
+        {
+            Label: 'Product id',
+            Value: Items.item.productId
+        },
+        {
+            Label: 'Price',
+            Value: Items.item.price
+        },
+    ],
+    UI.FieldGroup #purApp: {
+        $Type: 'UI.FieldGroupType',
+        Data : [
+            {
+                Label: 'Purchase Order Number',
+                Value: b_id
+            },
+            {
+                Label: 'Business Partner',
+                Value: bp.name
+            },
+            {
+                Label: 'Product purchase Date',
+                Value: pDate
+            },
+        ],
+    },
+    UI.Facets            : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID    : 'purAppFacet',
+            Label : 'purApp facets',
+            Target: '@UI.FieldGroup#purApp'
+        },
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID    : 'itemssFacet',
+            Label : ' facets',
+            Target: 'Items/@UI.LineItem'
+        },
+    ],
+);
 
 /*product*/
 annotate nnrg.Product with @(
@@ -367,14 +483,7 @@ annotate nnrg.Product with @(
             Label : 'ProductInformation',
             Target : '@UI.FieldGroup#ProductInformation',
         },
-        /*
-        {
-            $Type : 'UI.ReferenceFacet',
-            ID : 'StudentLanguagesFacet',
-            Label : 'Student Languages Information',
-            Target : 'Languages/@UI.LineItem',
-        },
-        */
+
     ],
     
 );

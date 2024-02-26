@@ -29,6 +29,7 @@ entity Business: cuid, managed {
     is_customer: Boolean default false;
 }
 
+@cds.persistence.skip
 entity States : cuid, managed {
     @title: 'Code'
     code: String(3);
@@ -53,6 +54,25 @@ entity Store: cuid, managed {
     pincode: String(10);
 }
 
+entity PurchaseApp {
+    key ID            : UUID;
+    b_id:Integer;
+    bp:Association to Business;
+    pDate:Date;
+    Items:Composition of many{
+        key ID:UUID;
+        item:Association to Items;
+    }
+}
+
+entity Items {
+    key ID :UUID;
+     storeId         : Association to Store;
+    qty:Association to Stock;
+    productId       : Association to Product;
+    price:Association to Product;
+}
+
 entity Stock: cuid, managed {
     @title: 'Store ID'
     store_id: String(23);
@@ -60,6 +80,17 @@ entity Stock: cuid, managed {
     product_id:String(5);
         @title: 'Stock Quantity'
     stock_qty: Integer;
+}
+
+entity SalesApp {
+    key ID :UUID;
+    s_id:Integer;
+    bp:Association to Business;
+    saleDate:Association to PurchaseApp;
+     Items:Composition of many{
+        key ID:UUID;
+        item:Association to Items;
+    }
 }
 
 entity Product : cuid, managed {
