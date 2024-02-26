@@ -19,8 +19,7 @@ entity Business: cuid, managed {
     state: Association to States;
     @title: 'PIN Code'
     pincode: String(10);
-    @title:'Is_GSTN_Registered'
-    is_gstn_registered: Boolean default false;
+    
     @title:'GSTIN Number'
     is_gstin_number: String(15) @mandatory;
     @title:'IS Vendor'

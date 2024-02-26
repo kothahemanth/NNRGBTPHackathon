@@ -79,10 +79,7 @@ annotate nnrg.Business with @(
             $Type : 'UI.DataField',
             Value : is_customer
         },
-        {
-            $Type : 'UI.DataField',
-            Value : is_gstn_registered
-        },
+
 
 
     ],
@@ -130,10 +127,7 @@ annotate nnrg.Business with @(
             $Type : 'UI.DataField',
             Value : is_customer,
         },
-        {
-            $Type : 'UI.DataField',
-            Value : is_gstn_registered,
-        },
+
         ],
     },
     UI.Facets : [
@@ -143,14 +137,7 @@ annotate nnrg.Business with @(
             Label : 'BuisinessPartnerInformation',
             Target : '@UI.FieldGroup#BusinessPartnerInformation',
         },
-        /*
-        {
-            $Type : 'UI.ReferenceFacet',
-            ID : 'StudentLanguagesFacet',
-            Label : 'Student Languages Information',
-            Target : 'Languages/@UI.LineItem',
-        },
-      */
+
     ],
     
 );
