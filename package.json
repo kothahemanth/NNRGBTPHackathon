@@ -42,6 +42,7 @@
     "app/business",
     "app/stock-data",
     "app/states",
-    "app/stock-data"
+    "app/stock-data",
+    "app/business"
   ]
 }
