@@ -80,6 +80,14 @@ annotate nnrg.Business_Partner with @(
             Value: Is_gstn_registered
         },
         {
+            $Type : 'UI.DataField',
+            Value : Is_vendor
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : Is_customer
+        },
+        {
             Label: 'GSTIN Number',
             Value: Gst_num
         },
@@ -115,6 +123,14 @@ annotate nnrg.Business_Partner with @(
             {
                 $Type: 'UI.DataField',
                 Value: state_code
+            },
+            {
+            $Type : 'UI.DataField',
+            Value : Is_vendor
+            },
+            {
+            $Type : 'UI.DataField',
+            Value : Is_customer
             },
             {Value: Is_gstn_registered},
             {
