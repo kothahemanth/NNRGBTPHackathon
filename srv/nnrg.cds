@@ -292,9 +292,6 @@ annotate nnrg.Product with @(
             Label : 'Product Information',
             Target : '@UI.FieldGroup#ProductInformation',
         },
-        
-        
-        
     ],    
 );
 
@@ -485,7 +482,7 @@ annotate nnrg.PurchaseApp.Items with {
             CollectionPath : 'Items',
             Parameters: [
                 {
-                    $Type             : 'Common.ValueListParameterInOut',
+                    $Type     : 'Common.ValueListParameterInOut',
                     LocalDataProperty : item_ID,
                     ValueListProperty : 'ID'
                 },
@@ -499,14 +496,13 @@ annotate nnrg.PurchaseApp.Items with {
 };
 
 annotate nnrg.PurchaseApp.Items with @(
-    UI.LineItem               : [{Value: item_ID},
+    UI.LineItem      : [{Value: item_ID},
 
     ],
     UI.FieldGroup #purAppitems: {
         $Type    : 'UI.FieldGroupType',
         Data     : [
             {Value: item_ID},
-            
         ],
     },
         UI.Facets: [{
@@ -537,7 +533,6 @@ annotate nnrg.Business_Partner with {
         }
     );
 };
-
 annotate nnrg.Store with {
     state @(
         Common.ValueListWithFixedValues: true,
