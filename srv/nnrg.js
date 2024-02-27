@@ -1,6 +1,6 @@
 const cds=require('@sap/cds')
 module.exports = cds.service.impl(async function () {
-    const { States, Business_Partner } = this.entities;
+    const { States, Business_Partner, Product} = this.entities;
     this.on("READ", Business_Partner, async (req) => {
         const results = await cds.run(req.query);
         return results;
@@ -24,7 +24,7 @@ module.exports = cds.service.impl(async function () {
               });
           }
       });
-      
+
         const query1 = SELECT.from( Business_Partner).where({ bp_no: req.data.bp_no });
         const result = await cds.run(query1); // Execute the query using cds.run()
         if (result.length > 0) {
@@ -46,4 +46,13 @@ module.exports = cds.service.impl(async function () {
         stat.$count=stat.length
         return stat;
     })
+
+    this.before(["CREATE", "UPDATE"], Business_Partner, async (req) => {
+        const results = await cds
+        .transaction(req)
+        .run(SELECT.from(Business_Partner));
+        const count = results.length;
+    
+        req.data.bp_no = count + 1;
+      });
 })

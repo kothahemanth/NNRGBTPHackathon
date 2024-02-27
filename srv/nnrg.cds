@@ -100,11 +100,11 @@ annotate nnrg.Business_Partner with @(
     UI.FieldGroup #BusinessP: {
         $Type: 'UI.FieldGroupType',
         Data : [
-            {
-                $Type: 'UI.DataField',
-                Label: 'Bussiness Partner Id',
-                Value: bp_no
-            },
+            // {
+            //     $Type: 'UI.DataField',
+            //     Label: 'Bussiness Partner Id',
+            //     Value: bp_no
+            // },
             {
                 $Type: 'UI.DataField',
                 Value: name

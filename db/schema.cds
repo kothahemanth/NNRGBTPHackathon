@@ -5,7 +5,7 @@ using { managed, cuid } from '@sap/cds/common';
 }
 entity Business_Partner {
     key ID: UUID;
-    bp_no:Integer;
+    bp_no:Integer default 0 @Core.Computed;
     @title:'Name'
     name:String(20);
     @title:'Address 1'
