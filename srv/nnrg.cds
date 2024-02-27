@@ -132,7 +132,9 @@ annotate nnrg.Business_Partner with @(
             $Type : 'UI.DataField',
             Value : Is_customer
             },
-            {Value: Is_gstn_registered},
+            {
+                $Type : 'UI.DataField',
+                Value: Is_gstn_registered},
             {
                 $Type: 'UI.DataField',
                 Value: Gst_num
@@ -221,61 +223,79 @@ annotate nnrg.Store with @(
 );
 
 
+annotate nnrg.Product with {
+@Common.Text : ' {Product}'
+@Core.IsURL: true
+@Core.MediaType: 'image/jpg'
+product_img;
+};
+
 annotate nnrg.Product with @(
-    UI.LineItem           : [
+    UI.LineItem: [
         {
-            Label: 'Product id',
-            Value: p_id
+            $Type : 'UI.DataField',
+            Label:'ProductID',
+            Value : product_id
         },
         {
-            Label: 'Product Name',
-            Value: name
+            $Type : 'UI.DataField',
+            Value : product_name
         },
         {
-            Label: 'Product Image URL',
-            Value: imageURL
+            $Type : 'UI.DataField',
+            Value : product_img
         },
         {
-            Label: 'Cost Price',
-            Value: costPrice
+            $Type : 'UI.DataField',
+            Value : product_cost
         },
         {
-            Label: 'Sell Price',
-            Value: sellPrice
-        },
-    ],
-    UI.FieldGroup #product: {
-        $Type: 'UI.FieldGroupType',
+            $Type : 'UI.DataField',
+            Value : product_sell
+        }
+    ],  
+);
+annotate nnrg.Product with @(       
+    UI.FieldGroup #ProductInformation : {
+        $Type : 'UI.FieldGroupType',
         Data : [
             {
-                Label: 'Product id',
-                Value: p_id
-            },
-            {
-                Label: 'Product Name',
-                Value: name
-            },
-            {
-                Label: 'Product Image URL',
-                Value: imageURL
-            },
-            {
-                Label: 'Cost Price',
-                Value: costPrice
-            },
-            {
-                Label: 'Sell Price',
-                Value: sellPrice
-            },
+            $Type : 'UI.DataField',
+            
+            Value : product_id
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : product_name
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : product_img
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : product_cost
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : product_sell
+        }
+        
         ],
     },
-    UI.Facets             : [{
-        $Type : 'UI.ReferenceFacet',
-        ID    : 'productFacet',
-        Label : 'product facets',
-        Target: '@UI.FieldGroup#product'
-    }, ],
 
+
+    UI.Facets : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'ProductInfoFacet',
+            Label : 'Product Information',
+            Target : '@UI.FieldGroup#ProductInformation',
+        },
+        
+        
+        
+    ],    
 );
 
 annotate nnrg.Stock with @(
@@ -329,8 +349,12 @@ annotate nnrg.Items with @(
             Value: qty.stock_qty
         },
         {
+            Label: 'Product',
+            Value: productId.product_id
+        },
+        {
             Label: 'Price',
-            Value: price.sellPrice
+            Value: price.product_sell
         },
 
     ],
@@ -347,8 +371,12 @@ annotate nnrg.Items with @(
                 Value: qty_ID
             },
             {
-                Label: 'Price',
-                Value: price_ID
+            Label: 'Product',
+            Value: productId_ID
+            },
+            {
+            Label: 'Price',
+            Value: price_ID
             },
         ],
     },
@@ -368,7 +396,7 @@ annotate nnrg.PurchaseApp with @(
         },
         {
             Label: 'Business Partner',
-            Value: bp.name
+            Value: bp_ID
         },
         {
             Label: 'Product purchase Date',
@@ -376,19 +404,19 @@ annotate nnrg.PurchaseApp with @(
         },
         {
             Label: 'store id',
-            Value: Items.item.storeId
+            Value: Items.item.storeId_ID
         },
         {
             Label: 'quantity',
-            Value: Items.item.qty
+            Value: Items.item.qty_ID
         },
         {
             Label: 'Product id',
-            Value: Items.item.productId
+            Value: Items.item.productId_ID
         },
         {
             Label: 'Price',
-            Value: Items.item.price
+            Value: Items.item.price_ID
         },
     ],
     UI.FieldGroup #purApp: {
@@ -400,7 +428,7 @@ annotate nnrg.PurchaseApp with @(
             },
             {
                 Label: 'Business Partner',
-                Value: bp.name
+                Value: bp_ID
             },
             {
                 Label: 'Product purchase Date',
@@ -424,6 +452,52 @@ annotate nnrg.PurchaseApp with @(
     ],
 );
 
+annotate nnrg.PurchaseApp with {
+    bp @(
+        Common.Text: bp.name,
+        Common.TextArrangement: #TextOnly,
+        Common.ValueListWithFixedValues: true,
+        Common.ValueList               : {
+            Label         : 'Business_Partner',
+            CollectionPath: 'Business_Partner',
+            Parameters    : [
+                {
+                    $Type            : 'Common.ValueListParameterInOut',
+                    LocalDataProperty: bp_ID,
+                    ValueListProperty: 'ID'
+                },
+                {
+                    $Type            : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty: 'name'
+                },
+
+            ]
+        }
+    );
+};
+annotate nnrg.PurchaseApp.Items with {
+    item @(
+        Common.Text: item.productId.product_name,
+        Common.TextArrangement: #TextOnly,
+        Common.ValueListWithFixedValues: true,
+        Common.ValueList : {
+            Label: 'Items',
+            CollectionPath : 'Items',
+            Parameters: [
+                {
+                    $Type             : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : item_ID,
+                    ValueListProperty : 'ID'
+                },
+                {
+                    $Type             : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'productId'
+                },
+            ]
+        }
+    )
+};
+
 annotate nnrg.PurchaseApp.Items with @(
     UI.LineItem               : [{Value: item_ID},
 
@@ -432,18 +506,15 @@ annotate nnrg.PurchaseApp.Items with @(
         $Type    : 'UI.FieldGroupType',
         Data     : [
             {Value: item_ID},
-            {
-                Label: 'store id',
-                Value: item.storeId_ID
-            },
+            
         ],
+    },
         UI.Facets: [{
             $Type : 'UI.ReferenceFacet',
             ID    : 'purAppitemsFacet',
             Label : 'purAppitems',
             Target: '@UI.FieldGroup#purAppitems',
         }, ]
-    },
 );
 annotate nnrg.Business_Partner with {
     state @(
@@ -491,6 +562,8 @@ annotate nnrg.Store with {
 
 annotate nnrg.Stock with {
     storeId   @(
+        Common.Text: storeId.name,
+        Common.TextArrangement: #TextOnly,
         Common.ValueListWithFixedValues: true,
         Common.ValueList               : {
             Label         : 'Store id',
@@ -510,6 +583,8 @@ annotate nnrg.Stock with {
         }
     );
     productId @(
+        Common.Text: productId.product_name,
+        Common.TextArrangement: #TextOnly,
         Common.ValueListWithFixedValues: true,
         Common.ValueList               : {
             Label         : 'Product id',
@@ -522,7 +597,7 @@ annotate nnrg.Stock with {
                 },
                 {
                     $Type            : 'Common.ValueListParameterDisplayOnly',
-                    ValueListProperty: 'name'
+                    ValueListProperty: 'product_name'
                 },
 
             ]
@@ -532,6 +607,8 @@ annotate nnrg.Stock with {
 
 annotate nnrg.Items with {
     storeId   @(
+        Common.Text: storeId.name,
+        Common.TextArrangement: #TextOnly,
         Common.ValueListWithFixedValues: true,
         Common.ValueList               : {
             Label         : 'Store id',
@@ -551,6 +628,8 @@ annotate nnrg.Items with {
         }
     );
     productId @(
+        Common.Text: productId.product_name,
+        Common.TextArrangement: #TextOnly,
         Common.ValueListWithFixedValues: true,
         Common.ValueList               : {
             Label         : 'Product id',
@@ -563,13 +642,15 @@ annotate nnrg.Items with {
                 },
                 {
                     $Type            : 'Common.ValueListParameterDisplayOnly',
-                    ValueListProperty: 'name'
+                    ValueListProperty: 'product_name'
                 },
 
             ]
         }
     );
     qty       @(
+        Common.Text: qty.stock_qty,
+        Common.TextArrangement: #TextOnly,
         Common.ValueListWithFixedValues: true,
         Common.ValueList               : {
             Label         : 'Quantity',
@@ -589,6 +670,8 @@ annotate nnrg.Items with {
         }
     );
     price     @(
+        Common.Text: price.product_sell,
+        Common.TextArrangement: #TextOnly,
         Common.ValueListWithFixedValues: true,
         Common.ValueList               : {
             Label         : 'Price',
@@ -601,7 +684,7 @@ annotate nnrg.Items with {
                 },
                 {
                     $Type            : 'Common.ValueListParameterDisplayOnly',
-                    ValueListProperty: 'price_sellPrice'
+                    ValueListProperty: 'product_sell'
                 },
 
             ]

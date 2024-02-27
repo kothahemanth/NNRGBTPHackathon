@@ -25,9 +25,9 @@ entity Business_Partner {
     @title:'GSTIN number'
     Gst_num:String(20);
     @title:'is_vendor'
-    Is_vendor:String(10);
+    Is_vendor:Boolean default false;
     @title:'is_customer'
-    Is_customer:String(10);
+    Is_customer:Boolean default false;
 }
 
 entity Store {
@@ -41,13 +41,18 @@ entity Store {
     PinCode      : String(10) ;
 }
 
-entity Product {
-    key ID: UUID;
-    p_id           : String(20); 
-    name     : String(100);
-    imageURL        : String(255);
-    costPrice       : Decimal(15, 2); 
-    sellPrice       : Decimal(15, 2); 
+entity Product : cuid, managed {
+    key ID            : UUID;
+    @title: 'ProductID'
+    product_id: String(30);
+    @title: 'Product Name'
+    product_name: String(20) ;
+    @title: 'Product Image URL'
+    product_img: String;
+    @title: 'Product Cost Price'
+    product_cost: Integer;
+    @title: 'Product Sell Price'
+    product_sell: Integer ;
 }
 
 

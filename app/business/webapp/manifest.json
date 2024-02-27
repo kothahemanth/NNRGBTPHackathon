@@ -128,6 +128,27 @@
                       "enabled": true,
                       "requiresSelection": true,
                       "text": "Is_cust"
+                    },
+                    "business_PartnerList": {
+                      "press": "business.ext.business_PartnerList.business_PartnerList.isNotVendor",
+                      "visible": true,
+                      "enabled": true,
+                      "requiresSelection": true,
+                      "text": "Is_notVen"
+                    },
+                    "business_PartnerListCust": {
+                      "press": "business.ext.business_PartnerListCust.business_PartnerListCust.isNotCust",
+                      "visible": true,
+                      "enabled": true,
+                      "requiresSelection": true,
+                      "text": "Is_notCust"
+                    },
+                    "business_PartnerListGst": {
+                      "press": "business.ext.business_PartnerListGst.business_PartnerListGst.isGst",
+                      "visible": true,
+                      "enabled": true,
+                      "requiresSelection": true,
+                      "text": "Is_gst"
                     }
                   }
                 }
