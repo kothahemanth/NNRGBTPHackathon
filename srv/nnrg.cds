@@ -648,7 +648,7 @@ annotate nnrg.Items with {
         Common.TextArrangement: #TextOnly,
         Common.ValueListWithFixedValues: true,
         Common.ValueList               : {
-            Label         : 'Quantity',
+            Label         : 'Quantiy',
             CollectionPath: 'Stock',
             Parameters    : [
                 {
