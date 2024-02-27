@@ -599,7 +599,7 @@ annotate nnrg.Stock with {
         }
     );
 }
-
+Enter
 annotate nnrg.Items with {
     storeId   @(
         Common.Text: storeId.name,
