@@ -5,7 +5,7 @@ using { managed, cuid } from '@sap/cds/common';
 }
 entity Business_Partner {
     key ID: UUID;
-    bp_no:String(6);
+    bp_no:Integer;
     @title:'Name'
     name:String(20);
     @title:'Address 1'
@@ -48,7 +48,7 @@ entity Product : cuid, managed {
     @title: 'Product Name'
     product_name: String(20) ;
     @title: 'Product Image URL'
-    product_img: String;
+    product_img: String default 'https://imgur.com/djS2boy.jpg'; 
     @title: 'Product Cost Price'
     product_cost: Integer;
     @title: 'Product Sell Price'

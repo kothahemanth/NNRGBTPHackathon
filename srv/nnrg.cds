@@ -3,7 +3,7 @@ using { com.hemanth.nnrg as db } from '../db/schema';
 service nnrg {
     entity Business_Partner as projection on db.Business_Partner;
     entity States           as projection on db.States;
-
+    
     entity Store            as
         projection on db.Store {
             @UI.Hidden: true
@@ -27,13 +27,18 @@ annotate nnrg.Business_Partner with @odata.draft.enabled;
 annotate nnrg.Store with @odata.draft.enabled;
 annotate nnrg.Product with @odata.draft.enabled;
 annotate nnrg.Stock with @odata.draft.enabled;
-annotate nnrg.PurchaseApp with @odata.draft.enabled;
 annotate nnrg.Items with @odata.draft.enabled;
+annotate nnrg.PurchaseApp with @odata.draft.enabled;
 
 annotate nnrg.Business_Partner with {
     pinCode @assert.format: '^[1-9][0-9]{5}$';
     Gst_num @assert.format: '^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[Z]{1}[0-9]{1}$';
 }
+
+annotate nnrg.Product with {
+    product_img @assert.match: '^https?:\/\/.*\.(?:png|jpg|jpeg)$';
+    product_sell @assert.range: [0,];
+};
 
 annotate nnrg.States with @(UI.LineItem: [
     {
@@ -400,20 +405,8 @@ annotate nnrg.PurchaseApp with @(
             Value: pDate
         },
         {
-            Label: 'store id',
+            Label: 'store',
             Value: Items.item.storeId_ID
-        },
-        {
-            Label: 'quantity',
-            Value: Items.item.qty_ID
-        },
-        {
-            Label: 'Product id',
-            Value: Items.item.productId_ID
-        },
-        {
-            Label: 'Price',
-            Value: Items.item.price_ID
         },
     ],
     UI.FieldGroup #purApp: {
@@ -430,6 +423,10 @@ annotate nnrg.PurchaseApp with @(
             {
                 Label: 'Product purchase Date',
                 Value: pDate
+            },
+            {
+            Label: 'store',
+            Value: Items.item.storeId.name
             },
         ],
     },
@@ -473,6 +470,7 @@ annotate nnrg.PurchaseApp with {
     );
 };
 annotate nnrg.PurchaseApp.Items with {
+
     item @(
         Common.Text: item.productId.product_name,
         Common.TextArrangement: #TextOnly,
@@ -485,24 +483,22 @@ annotate nnrg.PurchaseApp.Items with {
                     $Type     : 'Common.ValueListParameterInOut',
                     LocalDataProperty : item_ID,
                     ValueListProperty : 'ID'
-                },
-                {
-                    $Type             : 'Common.ValueListParameterDisplayOnly',
-                    ValueListProperty : 'productId'
-                },
+                }
             ]
         }
     )
 };
 
 annotate nnrg.PurchaseApp.Items with @(
-    UI.LineItem      : [{Value: item_ID},
-
+    UI.LineItem      : [
+        {Value: item_ID},
     ],
     UI.FieldGroup #purAppitems: {
         $Type    : 'UI.FieldGroupType',
         Data     : [
-            {Value: item_ID},
+            {Label: 'Products',Value: item_ID},
+            {Label: 'Quantity', Value: item.qty_ID},
+            {Label: 'Price', Value: item.price.product_sell}
         ],
     },
         UI.Facets: [{
@@ -512,6 +508,7 @@ annotate nnrg.PurchaseApp.Items with @(
             Target: '@UI.FieldGroup#purAppitems',
         }, ]
 );
+
 annotate nnrg.Business_Partner with {
     state @(
         Common.ValueListWithFixedValues: true,
@@ -555,9 +552,11 @@ annotate nnrg.Store with {
     );
 };
 
+
+
 annotate nnrg.Stock with {
     storeId   @(
-        Common.Text: storeId.name,
+        Common.Text: storeId.store_id,
         Common.TextArrangement: #TextOnly,
         Common.ValueListWithFixedValues: true,
         Common.ValueList               : {
@@ -578,7 +577,7 @@ annotate nnrg.Stock with {
         }
     );
     productId @(
-        Common.Text: productId.product_name,
+        Common.Text: productId.product_id,
         Common.TextArrangement: #TextOnly,
         Common.ValueListWithFixedValues: true,
         Common.ValueList               : {
@@ -644,7 +643,7 @@ annotate nnrg.Items with {
             ]
         }
     );
-    qty       @(
+        qty       @(
         Common.Text: qty.stock_qty,
         Common.TextArrangement: #TextOnly,
         Common.ValueListWithFixedValues: true,

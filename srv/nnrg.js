@@ -14,7 +14,17 @@ module.exports = cds.service.impl(async function () {
                 target: "Gst_num",
             });
         }
-        
+        this.before(["CREATE"], Product, async (req) => {
+          const { product_cost, product_sell } = req.data;
+          if (product_sell < product_cost) {
+              req.error({
+                  code: "INVALID_SELLING_PRICE",
+                  message: "Selling price should not be less than Cost Price",
+                  target: "product_sell",
+              });
+          }
+      });
+      
         const query1 = SELECT.from( Business_Partner).where({ bp_no: req.data.bp_no });
         const result = await cds.run(query1); // Execute the query using cds.run()
         if (result.length > 0) {
@@ -26,6 +36,7 @@ module.exports = cds.service.impl(async function () {
         }
         
       });
+      
       this.on('READ',States,async(req)=>{
         stat=[
             {"code":"TS","description":"Telangana"},
