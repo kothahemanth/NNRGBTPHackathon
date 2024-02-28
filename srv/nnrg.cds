@@ -19,7 +19,6 @@ service nnrg {
         };
 
     entity Stock            as projection on db.Stock;
-    entity Items            as projection on db.Items;
     entity PurchaseApp      as projection on db.PurchaseApp;
 }
 
@@ -27,7 +26,6 @@ annotate nnrg.Business_Partner with @odata.draft.enabled;
 annotate nnrg.Store with @odata.draft.enabled;
 annotate nnrg.Product with @odata.draft.enabled;
 annotate nnrg.Stock with @odata.draft.enabled;
-annotate nnrg.Items with @odata.draft.enabled;
 annotate nnrg.PurchaseApp with @odata.draft.enabled;
 
 annotate nnrg.Business_Partner with {
@@ -340,56 +338,6 @@ annotate nnrg.Stock with @(
     }, ],
 );
 
-annotate nnrg.Items with @(
-    UI.LineItem         : [
-        {
-            Label: 'Store Id',
-            Value: storeId.store_id
-        },
-        {
-            Label: 'Quantity',
-            Value: qty.stock_qty
-        },
-        {
-            Label: 'Product',
-            Value: productId.product_id
-        },
-        {
-            Label: 'Price',
-            Value: price.product_sell
-        },
-
-    ],
-
-    UI.FieldGroup #items: {
-        $Type: 'UI.FieldGroupType',
-        Data : [
-            {
-                Label: 'Store Id',
-                Value: storeId_ID
-            },
-            {
-                Label: 'Quantity',
-                Value: qty_ID
-            },
-            {
-            Label: 'Product',
-            Value: productId_ID
-            },
-            {
-            Label: 'Price',
-            Value: price_ID
-            },
-        ],
-    },
-    UI.Facets           : [{
-        $Type : 'UI.ReferenceFacet',
-        ID    : 'itemsFacet',
-        Label : 'items',
-        Target: '@UI.FieldGroup#items',
-    }, ],
-);
-
 annotate nnrg.PurchaseApp with @(
     UI.LineItem          : [
         {
@@ -406,7 +354,7 @@ annotate nnrg.PurchaseApp with @(
         },
         {
             Label: 'store',
-            Value: Items.item.storeId_ID
+            Value: storeId_ID
         },
     ],
     UI.FieldGroup #purApp: {
@@ -426,7 +374,7 @@ annotate nnrg.PurchaseApp with @(
             },
             {
             Label: 'store',
-            Value: Items.item.storeId.name
+            Value: storeId.name
             },
         ],
     },
@@ -491,14 +439,14 @@ annotate nnrg.PurchaseApp.Items with {
 
 annotate nnrg.PurchaseApp.Items with @(
     UI.LineItem      : [
-        {Value: item_ID},
+        {Label:'Items',Value: productId_ID},
     ],
     UI.FieldGroup #purAppitems: {
         $Type    : 'UI.FieldGroupType',
         Data     : [
-            {Label: 'Products',Value: item_ID},
-            {Label: 'Quantity', Value: item.qty_ID},
-            {Label: 'Price', Value: item.price.product_sell}
+            {Label: 'Products',Value: productId_ID},
+            {Label: 'Quantity', Value: qty},
+            {Label: 'Price', Value: price}
         ],
     },
         UI.Facets: [{
@@ -509,27 +457,32 @@ annotate nnrg.PurchaseApp.Items with @(
         }, ]
 );
 
-annotate nnrg.Business_Partner with {
-    state @(
+
+annotate nnrg.PurchaseApp.Items with {
+    productId @(
+        Common.Text: productId.product_name,
+        Common.TextArrangement: #TextOnly,
         Common.ValueListWithFixedValues: true,
         Common.ValueList               : {
-            Label         : 'State',
-            CollectionPath: 'States',
+            Label         : 'Product',
+            CollectionPath: 'Product',
             Parameters    : [
                 {
                     $Type            : 'Common.ValueListParameterInOut',
-                    LocalDataProperty: state_code,
-                    ValueListProperty: 'code'
+                    LocalDataProperty: productId_ID,
+                    ValueListProperty: 'ID'
                 },
 
                 {
                     $Type            : 'Common.ValueListParameterDisplayOnly',
-                    ValueListProperty: 'description'
+                    ValueListProperty: 'product_name'
                 },
             ]
         }
     );
 };
+
+
 annotate nnrg.Store with {
     state @(
         Common.ValueListWithFixedValues: true,
@@ -643,27 +596,27 @@ annotate nnrg.Items with {
             ]
         }
     );
-        qty       @(
-        Common.Text: qty.stock_qty,
-        Common.TextArrangement: #TextOnly,
-        Common.ValueListWithFixedValues: true,
-        Common.ValueList               : {
-            Label         : 'Quantiy',
-            CollectionPath: 'Stock',
-            Parameters    : [
-                {
-                    $Type            : 'Common.ValueListParameterInOut',
-                    LocalDataProperty: qty_ID,
-                    ValueListProperty: 'ID'
-                },
-                {
-                    $Type            : 'Common.ValueListParameterDisplayOnly',
-                    ValueListProperty: 'stock_qty'
-                },
+    //     qty       @(
+    //     Common.Text: qty,
+    //     Common.TextArrangement: #TextOnly,
+    //     Common.ValueListWithFixedValues: true,
+    //     Common.ValueList               : {
+    //         Label         : 'Quantiy',
+    //         CollectionPath: 'Stock',
+    //         Parameters    : [
+    //             {
+    //                 $Type            : 'Common.ValueListParameterInOut',
+    //                 LocalDataProperty: qty,
+    //                 ValueListProperty: 'ID'
+    //             },
+    //             {
+    //                 $Type            : 'Common.ValueListParameterDisplayOnly',
+    //                 ValueListProperty: 'stock_qty'
+    //             },
 
-            ]
-        }
-    );
+    //         ]
+    //     }
+    // );
     price     @(
         Common.Text: price.product_sell,
         Common.TextArrangement: #TextOnly,
@@ -680,6 +633,10 @@ annotate nnrg.Items with {
                 {
                     $Type            : 'Common.ValueListParameterDisplayOnly',
                     ValueListProperty: 'product_sell'
+                },
+                {
+                    $Type            : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty: 'product_name'
                 },
 
             ]

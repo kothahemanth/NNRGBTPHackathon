@@ -5,7 +5,7 @@ using { managed, cuid } from '@sap/cds/common';
 }
 entity Business_Partner {
     key ID: UUID;
-    bp_no:Integer default 0 @Core.Computed;
+    bp_no:String default 0 @Core.Computed;
     @title:'Name'
     name:String(20);
     @title:'Address 1'
@@ -68,19 +68,15 @@ entity PurchaseApp {
     pon:Integer;
     bp:Association to Business_Partner;
     pDate:Date;
+    storeId         : Association to Store;
     Items:Composition of many{
         key ID:UUID;
-        item:Association to Items;
+        qty:String(10);
+        productId       : Association to Product;
+        price:String(10);
     }
 }
 
-entity Items {
-    key ID :UUID;
-     storeId         : Association to Store;
-    qty:Association to Stock;
-    productId       : Association to Product;
-    price:Association to Product;
-}
 
 entity SalesApp {
     key ID :UUID;
@@ -89,7 +85,9 @@ entity SalesApp {
     saleDate:Association to PurchaseApp;
      Items:Composition of many{
         key ID:UUID;
-        item:Association to Items;
+        qty:String(10);
+        productId       : Association to Product;
+        price:String(10);
     }
 }
 @cds.persistence.skip
