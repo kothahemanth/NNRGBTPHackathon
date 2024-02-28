@@ -50,9 +50,9 @@ entity Product : cuid, managed {
     @title: 'Product Image URL'
     product_img: String default 'https://imgur.com/djS2boy.jpg'; 
     @title: 'Product Cost Price'
-    product_cost: Integer;
+    product_cost: Decimal(15, 5) ;
     @title: 'Product Sell Price'
-    product_sell: Integer ;
+    product_sell: Decimal(15, 5) ;
 }
 
 
@@ -71,7 +71,7 @@ entity PurchaseApp {
     storeId         : Association to Store;
     Items:Composition of many{
         key ID:UUID;
-        qty:String(10);
+        qty:Integer;
         productId       : Association to Product;
         price:String(10);
     }
@@ -83,6 +83,7 @@ entity SalesApp {
     son:Integer;
     bp:Association to Business_Partner;
     saleDate:Association to PurchaseApp;
+    storeId         : Association to Store;
      Items:Composition of many{
         key ID:UUID;
         qty:String(10);
