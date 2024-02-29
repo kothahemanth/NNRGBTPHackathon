@@ -82,7 +82,7 @@ entity SalesApp {
     key ID :UUID;
     son:Integer;
     bp:Association to Business_Partner;
-    saleDate:Association to PurchaseApp;
+    saleDate: Date;
     storeId         : Association to Store;
      Items:Composition of many{
         key ID:UUID;

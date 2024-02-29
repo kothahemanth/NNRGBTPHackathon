@@ -56,6 +56,7 @@ module.exports = cds.service.impl(async function () {
     // CREATE PurchaseApp
     this.before("CREATE", PurchaseApp, async (req) => {
         const { Items } = req.data;
+        const stoc = req.data.storeId_ID;
         for (const item of Items) {
             const product = await cds.read(Product).where({ ID: item.productId_ID });
             const product_cost = product[0].product_cost;
@@ -68,12 +69,13 @@ module.exports = cds.service.impl(async function () {
                 });
             }
             const stockEntry = await cds.read(Stock).where({ productId: item.productId_ID });
+
             if (stockEntry.length > 0) {
             const currentQuantity = stockEntry[0].stock_qty;
             const newQuantity = currentQuantity + item.qty;
           
             // await cds.update(Stock, { ID: stockEntry[0].ID }).with({ stock_qty: newQuantity });
-            await cds.run(UPDATE(Stock).set({ stock_qty: newQuantity }).where({ productId: item.productId_ID}));
+            await cds.run(UPDATE(Stock).set({ stock_qty: newQuantity }).where({ productId: item.productId_ID}).and({storeId:stoc}));
         }
         }
     });
@@ -81,6 +83,7 @@ module.exports = cds.service.impl(async function () {
     // CREATE SalesApp
     this.before("CREATE", SalesApp, async (req) => {
         const { Items } = req.data;
+        const stoc = req.data.storeId_ID;
         for (const item of Items) {
             const product = await cds.read(Product).where({ ID: item.productId_ID });
             const product_sell = product[0].product_sell;
@@ -92,7 +95,25 @@ module.exports = cds.service.impl(async function () {
                     target: "Items",
                 });
             }
+            const stockEntry = await cds.read(Stock).where({ productId: item.productId_ID });
+
+            if (stockEntry.length > 0) {
+            const currentQuantity = stockEntry[0].stock_qty;
+            const newQuantity = item.qty;
+
+            if (newQuantity > currentQuantity) {
+                req.error({
+                    code: "INSUFFICIENT_STOCK",
+                    message: `Insufficient stock for product ${item.productId_ID}. Available quantity: ${currentQuantity}`,
+                    target: "Items",
+                });
+            } else {
+            const updatedStockQuantity = currentQuantity - newQuantity;
+            // await cds.update(Stock, { ID: stockEntry[0].ID }).with({ stock_qty: newQuantity });
+            await cds.run(UPDATE(Stock).set({ stock_qty: updatedStockQuantity }).where({ productId: item.productId_ID}).and({storeId:stoc}));
         }
+    }
+}
     });
 
     // READ States

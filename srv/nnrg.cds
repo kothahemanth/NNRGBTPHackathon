@@ -411,14 +411,14 @@ annotate nnrg.SalesApp with @(
         },
         {
             Label: 'Product purchase Date',
-            Value: saleDate.pDate
+            Value: saleDate
         },
         {
             Label: 'store',
             Value: storeId_ID
         },
     ],
-    UI.FieldGroup #purApp: {
+    UI.FieldGroup #salApp: {
         $Type: 'UI.FieldGroupType',
         Data : [
             {
@@ -431,7 +431,7 @@ annotate nnrg.SalesApp with @(
             },
             {
                 Label: 'Product purchase Date',
-                Value: saleDate.pDate
+                Value: saleDate
             },
             {
             Label: 'store',
@@ -444,7 +444,7 @@ annotate nnrg.SalesApp with @(
             $Type : 'UI.ReferenceFacet',
             ID    : 'purAppFacet',
             Label : 'purApp facets',
-            Target: '@UI.FieldGroup#purApp'
+            Target: '@UI.FieldGroup#salApp'
         },
         {
             $Type : 'UI.ReferenceFacet',
@@ -579,9 +579,9 @@ annotate nnrg.SalesApp.Items with @(
     },
         UI.Facets: [{
             $Type : 'UI.ReferenceFacet',
-            ID    : 'purAppitemsFacet',
-            Label : 'purAppitems',
-            Target: '@UI.FieldGroup#purAppitems',
+            ID    : 'SalAppitemsFacet',
+            Label : 'SalAppitems',
+            Target: '@UI.FieldGroup#SalAppitems',
         }, ]
 );
 
